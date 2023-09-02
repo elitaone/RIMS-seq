@@ -1,0 +1,69 @@
+# run_RIMSseq.py
+__version__ = '2022.06.19'
+
+Created on Aug 8, 2022
+Modificaitons on Aug 12, 2022
+    Add --cycle options for CountErrorMpileup.py
+Modifications on Oct 10, 2022
+    Add MAPQ value in the mpileup file name
+Modifications on Oct 13, 2022:
+    change --vcf default to None
+Modifications on June 19, 2023:
+    Make a version for github
+
+# CountErrorMpileup.py
+__version__ = '2023.06.19'
+
+Created on Nov 19, 2021
+Modifications on Dec 3, 2021
+    Add --percentage_cutoff and --minimum_count filter to remove the loci having too many errors
+Modifications on June 14, 2022
+    Change --left and --right default to 0
+    If --left 0 and --right 0, skip the getfasta step
+Modifications on July 31, 2022
+    Change to 'if the output file exists, quit intead of writing at the end of the existing file'
+    Change to python3
+Modifications on Aug 4, 2022:
+    Fix the bug for context in RunClass(), change self.r>0 and self.l>0 to self.r>0 or self.l>0
+    Generate RunCountError() and Arg() function to faciliate running as an imported module
+Modifications on Aug 10, 2022:
+    change the conditional statement in ParseMpileup() to speed up, 
+    for Tar_NA12878_RIMseq_Rep2, originally it took 1h to finish the RIMSseq_human_pipeline_context.py from mpileup,
+    and the time consuming reduced to 40min after this change.
+Modifications on Oct 13, 2022:
+    Add fucntion ContertNone() for --vcf and --CpG arguments
+Modifications on Oct 25, 2022:
+    Default using FILTER=PASS in vcf file as SNP positions, add --noVcfFilter to cancel this
+    Convert the context to uppercase
+Modifications on June 19, 2023:
+    Remove contionalSelectionForHuman() and ParseMpileup() for github, making the script easier
+
+# CountErrorRegion.py
+__version__ = '2022.8.8'
+
+Created on Dec 23, 2021
+Modifications on April 10, 2022
+    take more than one input file, therefore can take Read1 C2T and Read2 G2A and count together
+Mondifications on July 31, 2022
+    change to python3
+Modifications on Aug 4, 2022
+    add option to count context, change to input Read1 and Read1 seperately to facilitate the context counting
+Modifications on Aug 8, 2022
+    change --annotation to --target to be consistent with PredictMethylation_Context.py
+    Reformat to be adapted to module import
+
+# PredictMethylation_Context.py
+__version__ = '2022.11.13'
+
+Created on Aug 8, 2022
+Modifications on Nov 13, 2022
+    Add calculation for context NC
+
+# TrimOverlappingReadPair.py
+__version__ = '2023.07.30'
+
+Created on Dec 5, 2021
+Modifications on July 30, 2023:
+    Fix the bug for calculating the mapping with soft clip at both ends and complete overlapping.
+    Add option to remove the complete overlapping pair from output sam file.
+    Add custom header in the output sam file, Add a custom XO tag: XO:Z:matetrim or XO:Z:readtrim
