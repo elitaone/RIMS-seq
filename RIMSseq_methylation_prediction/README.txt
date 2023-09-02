@@ -64,7 +64,7 @@ Need samtools and bedtools executable in PATH.
 (5) Based on the error rate in 0-standard and 100-standard, predict the methylation level in target region using PredictMethylation.py in the context-dependent manner.
 
 
-^ Run run_RIMS-seq.py for methylation prediction using the following command:
+^ Run run_RIMSseq.py for methylation prediction using the following command:
 
 If starting with bam file with removal of PCR duplicates, performing steps (1)-(5)
 $python run_RIMSseq.py --input name.dedup_reads.bam --removeOverlap \
