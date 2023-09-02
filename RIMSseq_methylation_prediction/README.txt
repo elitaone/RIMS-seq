@@ -11,7 +11,7 @@ This is used to predict the methylation level of human genomic regions (e.g. CpG
 (2) Map the read pairs to human hg38 genome using bowtie2 default alignment with the addition of RG header for variant calling
 (3) Remove the unmapped reads and PCR duplicates using Picard tools
 (4) Call germline variant using gatk
-(5) Predict regional methylation using RIMS-seq_methylation_prediction
+(5) Predict regional methylation using RIMSseq_methylation_prediction
 
 
 # Principle of RIMS-seq and methylation prediction
