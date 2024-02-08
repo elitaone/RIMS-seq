@@ -4,15 +4,7 @@ Author: Bo Yan
 Date: Aug 24, 2023
 ================
 
-This is used to predict the methylation level of human genomic regions (e.g. CpG islands) using RIMS-seq.
-
-# Analysis pipeline to use RIMS-seq to extract methylation and variant information for human samples, including
-(1) Trim the Illumina adapter sequence
-(2) Map the read pairs to human hg38 genome using bowtie2 default alignment with the addition of RG header for variant calling
-(3) Remove the unmapped reads and PCR duplicates using Picard tools
-(4) Call germline variant using gatk
-(5) Predict regional methylation using RIMSseq_methylation_prediction
-
+This tool is used to predict the methylation levels of human genomic regions, such as CpG islands, through the application of RIMS-seq.
 
 # Principle of RIMS-seq and methylation prediction
 
@@ -26,6 +18,13 @@ Because the deamination rate of 5mC varies between each library preparation and 
 The benefit of using internal control is that it has the same level of background error rate. 
 In addition, it works for exome targeted enrich sequencing.  
 
+# Analysis pipeline to use RIMS-seq to extract methylation and variant information for human samples, including
+
+(1) Trim the Illumina adapter sequence
+(2) Map the read pairs to human hg38 genome using bowtie2 default alignment with the addition of RG header for variant calling
+(3) Remove the unmapped reads and PCR duplicates using Picard tools
+(4) Call germline variant using gatk
+(5) Predict regional methylation using RIMSseq_methylation_prediction
 
 # Annotation files provided in ~/annotation folder
 
@@ -64,7 +63,7 @@ Need samtools and bedtools executable in PATH.
 (5) Based on the error rate in 0-standard and 100-standard, predict the methylation level in target region using PredictMethylation.py in the context-dependent manner.
 
 
-^ Run run_RIMSseq.py for methylation prediction using the following command:
+^ Execute the following command for methylation prediction:
 
 If starting with bam file with removal of PCR duplicates, performing steps (1)-(5)
 $python run_RIMSseq.py --input name.dedup_reads.bam --removeOverlap \
@@ -87,12 +86,14 @@ $python run_RIMSseq.py --R1mpileup name.R1.mpileup --R2mpileup name.R1.mpileup \
                 --CpGAnnotation ~/annotation/ucsc_CpGisland.CpGsite.mainchr.gtf \
 			--WGBS ~/annotation/ENCODE_human_WGBS_ultraStable_1kb_methylation.summary.txt
 
+Note:
+Execute the provided command to generate a bash script named NAME.MethylPrediction.script, which will contain all the necessary commands for methylation prediction.
 
-Run the above command to generate a bash script NAME.MethylPrediction.script containing all the commands required for the methylation prediction.
-Then run this bash file locally or on the cluster. Suggest running on the cluster since it may take a while to finish.
+Subsequently, execute the generated bash file either locally or on the cluster. It is recommended to run this on the cluster, as the process may take a significant amount of time to complete.
+
 Modify the generated script for:
 	Adding proper header lines as required for running on the cluster.
-	Choosing the python with required modules installed by activating virtual environment (e.g. using conda activate) or changing the python path.
+	Select the appropriate Python environment with the required modules installed by activating the virtual environment (e.g., using 'conda activate') or by modifying the Python path.
 
 
 ^ Options:
@@ -142,7 +143,7 @@ The contigs in the --RegionAnnotation file should match this genome file.
 
 --WGBS: Optional
 File containing the methylation evaluation of the ultra stable regions by other benchmark methods.
-The evolution based on ENCODE human WGBS is provided as ~/annotation/ENCODE_human_WGBS_ultraStable_1kb_methylation.summary.txt
+The methylation based on ENCODE human WGBS is provided as ~/annotation/ENCODE_human_WGBS_ultraStable_1kb_methylation.summary.txt
 If provided, this file is used for calibrating the error rate of 100% methylation standard.
 
 --cutoff: Int, Default 3000
@@ -153,4 +154,3 @@ Only the region having total>=cutoff will be saved in the output file CpG_Methyl
 If provided, these cycles will be ignored from error counting by CountErrorMpileup.py --cycle.
 e.g. --cycle 0 1
 The Illumina sequencing circle is 0-coordination, so 0 corresponds to the first cycle for both read1 and read2 in the fastq files that are used for mapping.
-
