@@ -4,18 +4,16 @@ Author: Bo Yan
 Date: Aug 24, 2023
 ================
 
-This tool is used to predict the methylation levels of human genomic regions, such as CpG islands, through the application of RIMS-seq.
+This tool is used to predict the methylation levels of human genomic regions, such as CpG islands, using RIMS-seq.
 
 # Principle of RIMS-seq and methylation prediction
 
-RIMS-seq deaminates 5-Methylcytosince (5mC) to thymine (T) and cytosine (C) to uracil with different conversion rate.
+RIMS-seq deaminates 5-Methylcytosince (5mC) to thymine (T) and cytosine (C) to uracil (U) with different conversion rate.
 The converted uracil will be removed using USER enzyme from Illumina sequencing, therefore the CtoT error reflects the methylation level.
 We have shown that the CtoT error rate and methylation level have a linear relationship based on linear regression analysis.
-The deamination rate of 5mC is about 1%, so for human genome sequencing, we do not expect an accurate methylation quantification at base resolution due to the sequencing depth limitation.
-Instead we can accurately predict the regional methylation level (e.g. CpG islands methylation level) based on the regional CtoT error rate.
+The deamination rate of 5mC is about 1%, so for human genome sequencing, we do not expect an accurate methylation quantification at base resolution due to the sequencing depth limitation. Instead we can accurately predict the regional methylation level (e.g. CpG islands methylation level) based on the regional CtoT error rate.
 
-Because the deamination rate of 5mC varies between each library preparation and sequencing, we use ultra stable regions in the human genome as internal controls to calibrate the linear relationship.
-The benefit of using internal control is that it has the same level of background error rate. 
+Because the deamination rate of 5mC varies between each library preparation and sequencing, we use several ultra stable regions in the human genome as internal controls to calibrate the linear relationship. The benefit of using internal control is that it has the same level of background error rate. 
 In addition, it works for exome targeted enrich sequencing.  
 
 # Analysis pipeline to use RIMS-seq to extract methylation and variant information for human samples, including
@@ -24,22 +22,21 @@ In addition, it works for exome targeted enrich sequencing.
 (2) Map the read pairs to human hg38 genome using bowtie2 default alignment with the addition of RG header for variant calling
 (3) Remove the unmapped reads and PCR duplicates using Picard tools
 (4) Call germline variant using gatk
-(5) Predict regional methylation using RIMSseq_methylation_prediction
+(5) Predict regional methylation using RIMSseq_methylation_prediction package
 
 # Annotation files provided in ~/annotation folder
 
 (1) ucsc_CpGisland.Blacklisted.mainchr.gtf: human hg38 CpG islands from UCSC browser on autosomes and chrX with blacklist regions removed, gtf format
 (2) ucsc_CpGisland.CpGsite.mainchr.gtf: CpG sites in the CpG islands, gtf format
+[Google Drive File]： https://drive.google.com/file/d/1Qe1heLSvKYoREAiZAlEQj69mF4JZRdlP/view?usp=drive_link
 (3) PMID_25493099_Methylated_1kb.candidateStableRegion.gtf: ultra stable regions of hg38 human genome
 (4) PMID_25493099_Methylated_1kb.candidateStableRegion.CpGsite.gtf: CpG sites in the ultra stable regions, used as fully methylated control
 (5) PMID_25493099_Methylated_1kb.candidateStableRegion.nonCpGsite.gtf: non-CpG cytosine sites in the ultra stable regions, used as unmethylated control
 (6) ENCODE_human_WGBS_ultraStable_1kb_methylation.summary.txt: the methylation level of human ultra stable regions based on ENCODE WGBS data
 
-
-# Python scripts provided
+# Python scripts provided in RIMSseq_methylation_prediction package
 
 RIMSseq_methylation_prediction/run_RIMSseq.py
-
 RIMSseq_methylation_prediction/src:
 (1) TrimOverlappingReadPair.py
 (2) CountErrorMpileup.py
@@ -48,10 +45,9 @@ RIMSseq_methylation_prediction/src:
 
 # Requirement
 
-All the python scripts are based on python 3;
+python>=3.8;
 Need python3 module regex, pandas, numpy and statistics;
 Need samtools and bedtools executable in PATH.
-
 
 # Usage Example
 
@@ -61,7 +57,6 @@ Need samtools and bedtools executable in PATH.
 (3) count error for each position using CountErrorMpileup.py: Use --REF C --BASE T for Read1, --REF G --BASE A for Read2.
 (4) combine the error counting based on regions using CountErrorRegion.py in the context-dependent manner: the 0-standard, 100-standard and target region (e.g. CGI). 
 (5) Based on the error rate in 0-standard and 100-standard, predict the methylation level in target region using PredictMethylation.py in the context-dependent manner.
-
 
 ^ Execute the following command for methylation prediction:
 
@@ -94,7 +89,6 @@ Subsequently, execute the generated bash file either locally or on the cluster. 
 Modify the generated script for:
 	Adding proper header lines as required for running on the cluster.
 	Select the appropriate Python environment with the required modules installed by activating the virtual environment (e.g., using 'conda activate') or by modifying the Python path.
-
 
 ^ Options:
 
