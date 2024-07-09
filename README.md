@@ -1,6 +1,6 @@
-# RIMS-seq
+# RIMS-seq2
 
-**RIMS-seq** can identify the human genomic variants and predict the regional methylation level (e.g. CpG islands methylation). <br>
+**RIMS-seq2** can identify the human genomic variants and predict the regional methylation level (e.g. CpG islands methylation). <br>
 
 Analysis pipeline to use RIMS-seq to extract methylation and variant information for human samples: <br>
 (1) Trim the Illumina adapter sequence <br>
